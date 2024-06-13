@@ -9,7 +9,7 @@
     application_logfile: 'workplace.log'
     application_path: '/u/htdocs/webpoint'
 
-    mysql_address: "10.235.136.182"
+    mysql_address: "10.224.248.87"
     mysql_user: "{{ application_user }}"
     mysql_database: "{{ application_user }}_db"
     mysql_password: "FlCXmliOzjKkk82VZjkArDZdV"
