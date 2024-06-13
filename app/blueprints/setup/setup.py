@@ -536,15 +536,15 @@ def login():
             password = request.form.get("password")
             
             # ReCaptcha
-            recaptcha_site_key = request.form["g-recaptcha-response"]
-            recaptcha_secret = current_app.config["RECAPTCHA_PRIVATE_KEY"]
-            response = requests.post(
-                f"https://www.google.com/recaptcha/api/siteverify?secret={recaptcha_secret}&response={recaptcha_site_key}"
-            ).json()
+            #recaptcha_site_key = request.form["g-recaptcha-response"]
+            #recaptcha_secret = current_app.config["RECAPTCHA_PRIVATE_KEY"]
+            #response = requests.post(
+            #    f"https://www.google.com/recaptcha/api/siteverify?secret={recaptcha_secret}&response={recaptcha_site_key}"
+            #).json()
             
-            if not response["success"]:
-                flash("Erro ao validar o captcha.", "alert-danger")
-                return redirect(url_for("setup.login"))
+            #if not response["success"]:
+            #    flash("Erro ao validar o captcha.", "alert-danger")
+            #    return redirect(url_for("setup.login"))
             
             user = Users.query.filter_by(email=username).one_or_none()
             if user is not None:
@@ -650,18 +650,18 @@ def create_admin_user():
         password = request.form.get('password')
     
         # ReCaptcha
-        recaptcha_site_key = request.form["g-recaptcha-response"]
-        recaptcha_secret = current_app.config["RECAPTCHA_PRIVATE_KEY"]
-        response = requests.post(
-            f"https://www.google.com/recaptcha/api/siteverify?secret={recaptcha_secret}&response={recaptcha_site_key}"
-        ).json()
-        fields = {
-            "fullname": fullname,
-            "email": email
-        }
-        if not response["success"]:
-            flash("Erro ao validar o captcha.", "alert-danger")
-            return redirect(url_for("setup.config"))
+        #recaptcha_site_key = request.form["g-recaptcha-response"]
+        #recaptcha_secret = current_app.config["RECAPTCHA_PRIVATE_KEY"]
+        #response = requests.post(
+        #    f"https://www.google.com/recaptcha/api/siteverify?secret={recaptcha_secret}&response={recaptcha_site_key}"
+        #).json()
+        #fields = {
+        #    "fullname": fullname,
+        #    "email": email
+        #}
+        #if not response["success"]:
+        #    flash("Erro ao validar o captcha.", "alert-danger")
+        #    return redirect(url_for("setup.config"))
     
         # Check password length
         if len(password) < 8:
