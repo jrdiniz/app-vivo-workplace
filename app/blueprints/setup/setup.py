@@ -471,7 +471,7 @@ def event_status(message):
 @login_required
 def messages(event_id, page=1):
     event = Event.query.filter_by(id = event_id).first()
-    messages = Message.query.filter_by(event_id = event_id).order_by(Message.create_at.desc()).paginate(per_page=100, page=page, error_out=True)
+    messages = Message.query.filter_by(event_id = event_id).order_by(Message.created_at.desc()).paginate(per_page=100, page=page, error_out=True)
     return render_template('messages.html', messages=messages, event=event)
 
 @login_required

@@ -1,12 +1,12 @@
 ---
-- name: Playbook deploy Webinar Vivo Recrutamento
+- name: Playbook deploy Workplace Backup
   hosts: 127.0.0.1
   connection: local
   
   vars:
-    application_user: 'vivorecrutamento'
+    application_user: 'workplace'
     application_group: 'webpoint'
-    application_logfile: 'vivorecrutamento.log'
+    application_logfile: 'workplace.log'
     application_path: '/u/htdocs/webpoint'
 
     mysql_address: "10.235.136.182"
@@ -170,7 +170,7 @@
 
   - name: Restart Application
     systemd:
-      name: vivoenergia
+      name: workplace
       state: restarted
 
   handlers:
@@ -185,5 +185,5 @@
 
     - name: Restart Application
       systemd:
-        name: vivoenergia
+        name: workplace
         state: restarted

@@ -146,7 +146,7 @@ def event_register(slug):
     if request.method == "POST":
         event = get_event()
         name = request.form.get("name")
-        phone_number = request.form.get("phone_number")
+        phone_number = 00000000000
         email = request.form.get("email")
         register = Register.query.filter_by(event_id=event.id, email=email).one_or_none()
         recaptcha_site_key = request.form["g-recaptcha-response"]
@@ -252,7 +252,7 @@ def receive_message(message):
         {
             "nickname": message.nickname,
             "text": message.text,
-            "create_at": message.create_at.strftime("%d/%m/%Y %H:%M"),
+            "create_at": message.created_at.strftime("%d/%m/%Y %H:%M"),
             "message_id": message.id,
             "register_id": message.register_id
         },

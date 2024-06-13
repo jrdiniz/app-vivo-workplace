@@ -36,7 +36,7 @@
             <tbody>
                 {% for message in messages %}
                 <tr>
-                    <td>{{ message.create_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td>{{ message.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
                     <td><a href="{{ message.register_id }}"> {{ message.nickname }}</a></td>
                     <td>{{ message.text }}</td>
                     <td>
