@@ -150,7 +150,7 @@
       name: "{{ mysql_user }}"
       password: "{{ mysql_password }}" 
       priv: "{{ mysql_database }}.*:ALL"
-      host: "%"
+      host: "{{ mysql_address }}"
 
   - name: Create python virtualenv and install requirements
     pip:
