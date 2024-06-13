@@ -149,42 +149,42 @@ def event_register(slug):
         phone_number = 00000000000
         email = request.form.get("email")
         register = Register.query.filter_by(event_id=event.id, email=email).one_or_none()
-        recaptcha_site_key = request.form["g-recaptcha-response"]
-        recaptcha_secret = current_app.config["RECAPTCHA_PRIVATE_KEY"]
-        response = requests.post(
-            f"https://www.google.com/recaptcha/api/siteverify?secret={recaptcha_secret}&response={recaptcha_site_key}"
-        ).json()
-        fields = {
-            "name": name,
-            "phone_number": phone_number,
-            "email": email
-        }
-        if response.get("success"):
-            if register is None:
-                register = Register(
-                    name=name,
-                    phone_number=phone_number,
-                    email=email,
-                    date=datetime.now(),
-                    event_id=event.id,
-                )
-                db.session.add(register)
-                db.session.commit()
-            response = make_response(redirect(url_for("webui.live", slug=event.slug)))
-            response.set_cookie(
-                key=slug,
-                value=email,
-                max_age=60 * 60 * 24 * 10,
+        #recaptcha_site_key = request.form["g-recaptcha-response"]
+        #recaptcha_secret = current_app.config["RECAPTCHA_PRIVATE_KEY"]
+        #response = requests.post(
+        #    f"https://www.google.com/recaptcha/api/siteverify?secret={recaptcha_secret}&response={recaptcha_site_key}"
+        #).json()
+        #fields = {
+        #    "name": name,
+        #    "phone_number": phone_number,
+        #    "email": email
+        #}
+        #if response.get("success"):
+        if register is None:
+            register = Register(
+                name=name,
+                phone_number=phone_number,
+                email=email,
+                date=datetime.now(),
+                event_id=event.id,
             )
-            response.set_cookie(
-                key="register",
-                value=register.id,
-                max_age=60 * 60 * 24 * 10,
-            )
-            return response
-        else:
-            flash("Favor responder o desafio reCAPTCHA.", "alert-danger")
-            return render_template("landing.html", event=event, fields=fields)
+            db.session.add(register)
+            db.session.commit()
+        response = make_response(redirect(url_for("webui.live", slug=event.slug)))
+        response.set_cookie(
+            key=slug,
+            value=email,
+            max_age=60 * 60 * 24 * 10,
+        )
+        response.set_cookie(
+            key="register",
+            value=register.id,
+            max_age=60 * 60 * 24 * 10,
+        )
+        return response
+        #else:
+        #    flash("Favor responder o desafio reCAPTCHA.", "alert-danger")
+        #    return render_template("landing.html", event=event, fields=fields)
     return redirect(url_for("webui.index"))
 
 

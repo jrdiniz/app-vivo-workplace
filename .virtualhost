@@ -2,10 +2,8 @@ server {
     listen 443 ssl;
     server_name {{ application_user }}.terra.com.br;
 
-    ssl_certificate /etc/letsencrypt/live/{{ application_user }}.terra.com.br/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/{{ application_user }}.terra.com.br/privkey.pem; # managed by Certbot
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+    ssl_certificate /etc/ssl/certs/terra/TERRA-SAN-2023-2024-FULLCHAIN.pem; 
+    ssl_certificate_key /etc/ssl/certs/terra/TERRA-SAN-2023-2024.key; 
     ssl_protocols SSLv2 SSLv3 TLSv1 TLSv1.1 TLSv1.2;
 
     access_log  /var/log/nginx/{{ application_user }}_access.log;
