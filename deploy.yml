@@ -133,25 +133,6 @@
         MYSQL_PASSWORD={{ mysql_password }} 
         APP_DOMAIN={{ url }}
 
-  - name: Create a new database
-    mysql_db: 
-      login_user: "{{ mysql_root }}"
-      login_password: "{{ mysql_root_password }}"
-      login_host: "{{ mysql_address }}" 
-      name: "{{ mysql_database }}"
-      state: present 
-      collation: utf8_general_ci
-
-  - name: Create mysql user
-    mysql_user:
-      login_user: "{{ mysql_root }}"
-      login_password: "{{ mysql_root_password }}"
-      login_host: "{{ mysql_address }}" 
-      name: "{{ mysql_user }}"
-      password: "{{ mysql_password }}" 
-      priv: "{{ mysql_database }}.*:ALL"
-      host: "{{ mysql_address }}"
-
   - name: Create python virtualenv and install requirements
     pip:
       virtualenv_command: /usr/bin/python3 -m venv
