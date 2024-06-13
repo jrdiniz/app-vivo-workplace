@@ -1,0 +1,14 @@
+<div class="row my-3">
+    <div class="col-12">
+        <div class="h3">
+            {% if event.status == 'started' %}
+            <span class="badge bg-success">Iniciado</span> 
+            {% elif event.status == 'scheduled' %} 
+            <span class="badge bg-secondary">Agendado</span> 
+            {% elif event.status == 'finished' %}
+            <span class="badge bg-danger">Finalizado</span>
+            {% endif %} 
+            - {{ event.title }} </div>
+        <div class="pb-3" id="event-url"><span class="fw-bold">Link da página do evento:</span> <a href="{{ request.scheme }}://{{ request.host }}/{{event.slug}}" target="_blank">{{ request.scheme }}://{{ request.host }}/{{event.slug}}</a></div>
+    </div>
+</div>

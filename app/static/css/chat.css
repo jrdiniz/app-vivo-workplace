@@ -1,0 +1,110 @@
+:root {
+    --primary-color: rgb(70, 30, 95);
+    --secondary-color: rgb(235, 60, 125);
+    --tertiary-color: rgb(250, 100, 35);
+    --text-dark: #000;
+    --text-light: #fff;
+    --text-light-plus: #dee2e6;
+  }
+  body {
+    margin-top: 20px;
+  }
+  .chat-widget {
+    height: 284px;
+  }
+  
+  @media (max-width: 1200px) {
+    .chat-messages {
+      max-height: 250px;
+      height: 250px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .chat-messages {
+      min-height: 284px;
+      height: 284px;
+    }
+  }
+  
+  .chat-messages {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    font-size: 12px;
+  }
+  .chat-widget-header{
+    background-color: var(--primary-color);
+  }
+
+  .chat-message-header {
+    padding-bottom: 2px;
+    font-weight: bold;
+  }
+  
+  .chat-message {
+    flex-shrink: 1;
+
+    padding: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .chat-message-guest {
+    color: var(--text-dark);
+    border: 1px solid var(--text-light-plus);
+  }
+  .chat-message-you {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+  }
+  .chat-message-moderator {
+    background-color: var(--secondary-color);
+    color: var(--text-light);
+  }
+  
+  .border-top {
+    border-top: 1px solid #dee2e6 !important;
+  }
+  
+  .message {
+    background-color: var(--primary-color);
+    opacity: 0.6;
+    color: var(--text-light);
+  }
+  
+  .input-message-container{
+    position: relative;
+    width: 100%;
+  }
+  .input-message {
+    overflow-y: hidden;
+    resize: none;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+    width: calc(100% - 0px); /* Adjust the width based on your design */
+  }
+
+  .input-message::-webkit-scrollbar {
+    display: none; 
+  }
+  .btn-custom{
+    position: absolute;
+    bottom: 5px; /* Adjust the bottom margin */
+    right: 5px; /* Adjust the right margin */
+  }
+
+  .btn-delete-message{
+    --bs-btn-padding-y: 0rem; 
+    --bs-btn-padding-x: .5rem;
+  }
+
+  .disable-resize{
+    resize: none;
+  }
+
+  @media (max-width: 575.98) {
+    .chat-widget {
+      padding-top: 20px;
+    }
+  }

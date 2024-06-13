@@ -1,0 +1,87 @@
+{% extends "base-setup.html" %}
+{% block content %}
+{% include "base-setup-header.html" ignore missing %}
+<div class="row">
+    <div class="col-sm-12 mt-2 mb-3">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('setup.edit_event', id=event.id) }}">Landing Page</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('setup.survey', event_id = event.id) }}">Pesquisa de Satisfação</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ url_for('setup.messages', event_id = event.id) }}">Mensagens</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+
+        <div class="row mt-3 d-flex">
+            <div class="h4 pb-3 col-10 justify-content-start align-items-center d-flex">Mensagens</div>
+            <div class="col-2 justify-content-end align-items-center d-flex"><a class="btn btn-primary" href="{{ url_for('setup.message_export', event_id = event.id) }}"><i class="bi bi-box-arrow-down"></i> Exportar</a></div>
+        </div>
+        
+        <p>Mensagens enviadas via chat</p>
+        
+        <table class="table">
+            <thead>
+                <th width="15%">Data e Hora</th>
+                <th width="15%">Apelido</th>
+                <th width="60%">Mensagem</th>
+                <th width="10%"></th>
+            </thead>
+            <tbody>
+                {% for message in messages %}
+                <tr>
+                    <td>{{ message.create_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td><a href="{{ message.register_id }}"> {{ message.nickname }}</a></td>
+                    <td>{{ message.text }}</td>
+                    <td>
+                        <a href="{{ url_for('setup.message_delete', event_id = event.id, message_id = message.id)}}" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <nav aria-label="Páginas">
+            <ul class="pagination justify-content-center">
+                {% if messages.prev_num %}
+                <li class="page-item">
+                    <a href="{{ url_for('setup.messages', event_id = event.id, page=messages.prev_num) }}" class="page-link" tabindex="1" aria-disabled="true">Anterior</a>
+                </li>
+                {% endif %}
+                {% for page in messages.iter_pages(left_edge=3, right_edge=3) %}
+                    {% if page %}
+                        {% if page != messages.page %}
+                            <li class="page-item"><a href="{{ url_for('setup.messages', event_id = event.id, page=page) }}" class="page-link"> {{ page }} </a></li> 
+                        {% else %}
+                            <li class="page-item active" aria-current="page"><a href="{{ url_for('setup.messages', event_id = event.id, page=page) }}" class="page-link"> {{ page }} </a></li> 
+                        {% endif %}
+                    {% else %}
+                        ...
+                    {% endif %}
+                {% endfor %}
+                {% if messages.next_num %}
+                <li class="page-item">
+                    <a href="{{ url_for('setup.messages',event_id = event.id, page=messages.next_num) }}" class="page-link" tabindex="1" aria-disabled="true">Próxima</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+    {{ super() }}
+    <!-- SockerIO -->
+    <script src="{{ url_for('static', filename = 'js/libs/socket.io.min.js') }}"></script>
+
+    <!-- Streaming.js -->
+    <script src="{{ url_for('static', filename = 'js/comments.js') }}"></script>
+
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+{% endblock %}

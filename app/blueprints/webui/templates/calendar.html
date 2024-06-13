@@ -1,0 +1,7 @@
+{{ event.title }}
+{{ event.subtitle }}
+
+Quando: {{ event.date.strftime("%d/%m/%Y") }}
+Horário: {{ event.start.strftime("%Hh%M") }}
+
+{{ event.icalendar }}

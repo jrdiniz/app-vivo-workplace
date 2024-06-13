@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super ()}}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/webui.css') }}" crossorigin="anonymous">
+{% endblock %}
+{% block content %}
+<header id="webinar-section">
+    <div class="dark-overlay">
+      <div class="home-inner container">
+        <div class="row">
+          <div class="col-lg-12 d-lg-block">
+            <div class="h1 pb-2 "><span class="text-color-pink">Obrigado pela sua inscrição</span></div>
+            <div class="h2 pb-2"><span class="text-color-purple">Evento: {{ event.title }}</span></div>
+            <div class="h4"><span class="text-color-pink">Data e Horário:</span> {{ moment(event_date_utc).format('dddd, LL') }}, a partir das {{ event.start.strftime("%Hh%M")}} </div>
+            <div class="pt-4"><a href="{{ url_for('webui.calendar', slug=event.slug ) }}" class="btn btn-purple"><i class="bi bi-calendar3"></i> Adicionar ao Calendário</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+{% endblock %}
+{% block javascript %}
+{{ super() }}
+<script src="{{ url_for('static', filename = 'js/libs/socket.io.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/schedule.js' ) }}"></script>
+{% endblock %}

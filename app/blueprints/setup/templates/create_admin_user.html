@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet"  crossorigin="anonymous">
+    <link href="{{ url_for('static', filename='node_modules/bootstrap-icons/font/bootstrap-icons.min.css')}}" rel="stylesheet"  crossorigin="anonymous">
+</head>
+<body>
+<div class="mt-5 container">
+  <div class="row justify-content-center">
+    <div class="col-sm-6">
+        <div class="card p-4">
+            <div class="card-body">
+                <h2 class="">Acesso Administrativo</h2>
+                <hr />
+                <form method="post" action="{{ url_for('setup.create_admin_user')}}" autocomplete="off" role="form">
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon3"><i class="bi bi-person-fill"></i></span>
+                            <div class="form-floating">
+                                <input
+                                type="text"
+                                class="form-control"
+                                id="fullname"
+                                placeholder="Informe o seu nome completo"
+                                name="fullname"
+                                required
+                                />
+                                <label for="">Informe o seu nome completo</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon3"><i class="bi bi-envelope"></i></span>
+                            <div class="form-floating">
+                                <input
+                                type="text"
+                                class="form-control"
+                                id="email"
+                                placeholder="Informe o seu endereço de e-mail"
+                                name="email"
+                                required
+                                />
+                                <label for="">Informe o seu endereço de e-mail</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon3"><i class="bi bi-lock-fill"></i></span>
+                            <div class="form-floating">
+                                <input
+                                    type="password"
+                                    class="form-control"
+                                    id="password"
+                                    placeholder="Defina a senha do seu usuário"
+                                    name="password"
+                                    required>
+                                <label for="">Defina a senha do seu usuário</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div
+                            class="g-recaptcha"
+                            data-sitekey="6LflkcsZAAAAADX-eNQkBOdI6P_fWdIQ9nlrhaJe"
+                        ></div>
+                    </div>
+                    <div>
+                        {% with messages = get_flashed_messages(with_categories=true) %} 
+                        {% if messages %} 
+                            {% for category, message in messages %}
+                                <div class="mb-3">
+                                    <div class="alert {{category}} alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                    </div>
+                              </div>
+                            {% endfor %} 
+                        {% endif %} 
+                        {% endwith %}
+                    </div>
+                    
+                    <div class="form-group mt-3">
+                        <button type="submit" class="btn btn-primary w-100">Configurar Acesso</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--reCAPTCHA v2-->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+<script src="{{ url_for('static', filename='js/validate-password.js')}}"></script>
+</body>
+</html>
+

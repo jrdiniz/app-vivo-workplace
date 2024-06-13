@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webinar - Administração</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/base-setup.css') }}">
+    <link href="{{ url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet"  crossorigin="anonymous">
+    <link href="{{ url_for('static', filename='node_modules/bootstrap-icons/font/bootstrap-icons.min.css')}}" rel="stylesheet"  crossorigin="anonymous">
+    {% endblock %}
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('setup.events') }}">Webinar</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto mr-auto mb2 mb-lg-0">
+          <li class="nav-item">
+            <a href="{{ url_for('setup.events') }}" class="nav-link"><i class="far fa-calendar-alt pr-2"></i>Eventos</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('setup.logout')}}"><i class="bi bi-box-arrow-right"></i> Sair</a>
+          </li>
+      </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+  <div id="footer" class="my-5">
+
+  </div>
+  <script src="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+  <!-- Setup.js -->
+  <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+  <script src="{{ url_for('static', filename = 'js/setup.js') }}"></script>
+  {% block javascript %}{% endblock %}
+</body>
+</html>

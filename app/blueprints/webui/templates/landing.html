@@ -1,0 +1,141 @@
+{% extends "base.html" %} {% block head %} {{ super ()}}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/webui.css') }}"
+  crossorigin="anonymous"
+/>
+
+<!--reCAPTCHA v2-->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+{% endblock %} {% block title %}{{ event.title }}{% endblock %} {% block content
+%}
+<div class="container-fluid landing-background landing" id="webinar-section">
+  <div class="home-inner container">
+    <div class="row">
+      <div class="col-lg-8">
+        <h1>{{ event.title }}</h1>
+        <h2>
+          {{ moment(event_date_utc).format('dddd, LL') }} a partir das {{
+          event.start.strftime("%Hh%M")}}
+        </h2>
+        <div>
+          <a
+            href="{{ url_for('webui.calendar', slug=event.slug) }}"
+            class="btn btn-purple"
+            ><i class="bi bi-calendar3"></i> Adicionar ao Calendário</a
+          >
+        </div>
+        <p class="description">{{ event.subtitle }}</p>
+        {% set speakers = event.speakers.split(';') %}
+        <div class="speakers">
+          <p>Apresentado por:</p>
+          <ul>
+            {% for speaker in speakers %}
+            <li class="text-color-purple">{{ speaker}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="h4 pt-4 text-color-purple">Compartilhe!</div>
+        <div class="pb-2 sharethis-inline-share-buttons"></div>
+      </div>
+      <div class="col-lg-4 pt-2">
+        <div class="card bg-pink text-left">
+          <div class="card-body">
+            <p class="text-light lead">
+              Preencha o formulário e garanta sua participação
+            </p>
+            <form
+              method="POST"
+              action="{{ url_for('webui.event_register', slug=event.slug ) }}"
+              id="form-register"
+              name="form_register"
+              class="row g-1"
+            >
+              <div class="form-floating mb-2">
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  id="name-input"
+                  name="name"
+                  placeholder="Nome Completo"
+                  {% if fields %} value="{{ fields.name }}" {% endif %}
+                />
+                <label for="floatingInput">Nome Completo</label>
+                <small class="invalid-feedback"></small>
+              </div>
+              <div class="form-floating mb-2">
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  id="phonenumber-input"
+                  name="phone_number"
+                  placeholder="Telefone"
+                  {% if fields %} value="{{ fields.phone_number }}" {% endif %}
+                />
+                <label for="floatingInput">Telefone/Celular</label>
+                <small class="invalid-feedback"></small>
+              </div>
+              <div class="form-floating mb-2">
+                <input
+                  type="email"
+                  class="form-control form-control-lg"
+                  id="email-input"
+                  name="email"
+                  placeholder="E-mail" {% if fields %} value="{{ fields.email }}" {% endif %}
+                />
+                <label for="floatingInput">E-mail</label>
+                <small class="invalid-feedback"></small>
+              </div>
+              
+              <div class="form-group">
+                <div
+                  class="g-recaptcha"
+                  data-sitekey="6LflkcsZAAAAADX-eNQkBOdI6P_fWdIQ9nlrhaJe"
+                ></div>
+              </div>
+              {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %} {% for category, message in messages %}
+              <div class="form-group">
+                <div class="text-light pt-2 policy">
+                  <i class="fas fa-exclamation-circle"></i> {{ message }}
+                </div>
+              </div>
+              {% endfor %} {% endif %} {% endwith %}
+              <input
+                type="submit"
+                value="Participar"
+                class="btn btn-outline-light btn-block"
+              />
+              <div class="text-light pt-2 policy">
+                <small
+                  >Os dados aqui declarados serão utilizados para contato
+                  relacionado a serviços, eventos e ofertas especiais de Vivo
+                  Empresas. O contato poderá ser realizado por e-mail ou
+                  telefone. Ao preencher esse formulário declaro que estou
+                  ciente e concordo com essa utilização por parte da Telefônica
+                  Brasil S/A e suas afiliadas, nos termos da
+                  <a
+                    href="https://www.vivo.com.br/a-vivo/informacoes-aos-clientes/centro-de-privacidade"
+                    target="_blank"
+                    >Política de Privacidade</a
+                  >.</small
+                >
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  {% block script %}
+  <script
+    type="text/javascript"
+    src="https://platform-api.sharethis.com/js/sharethis.js#property=5e8e7e797daa0a0012e7bf2c&product=inline-share-buttons"
+    async="async"
+  ></script>
+  <script src="{{ url_for('static', filename='js/landing.js')}}"></script>
+  {% endblock %} {% endblock %}
+</div>

@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super ()}}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/webui.css') }}" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" media="screen" href="{{url_for('static', filename='plugins/video-js-8.10.0/video-js.min.css')}}">
+{% endblock %}
+{% block content %}
+<section id="player-section">
+    <div class="player-inner container">
+       
+        {% if register %}
+        <div class="row">
+            <div class="col-lg-8 d-lg-block">
+                <video id="player" class="video-js vjs-theme-forest vjs-16-9 vjs-big-play-button" {% if streaming.poster %} poster="{{ url_for('static', filename='uploads/' + streaming.poster) }}" {% endif %}>
+                    <source src="{{ streaming.source }}" type="application/x-mpegURL">
+                </video>
+                <div>
+                    <h3 class="mt-4">{{ event.title }}</h3>                  
+                    <p>{{ event.subtitle }}</p>
+                </div>
+                {% if survey %}
+                <div>
+                    <div class="card mb-4">
+                        <div class="row no-gutters">
+                          <div class="col-lg-3 d-none d-lg-block">
+                            <img src="{{ url_for('static', filename='uploads/') }}{{ survey.qrcode }}" class="card-img" alt="QRCode">
+                          </div>
+                          <div class="col-md-9">
+                            <div class="card-body">
+                              <h5 class="card-title"><strong>Participe da <a href="{{ survey.survey_link }}" class="text-decoration-none" target="_blank"><span class="text-color-pink">Pesquisa de Satisfação!</span></a></strong></h5>
+                              <p>Queremos melhorar continuamente a sua experiência e garantir que cada webinar seja ainda mais útil e informativo para você. Sua opinião é fundamental para nós! Acesse a pesquisa escaneando o QRCode ou através do <a href="{{ survey.survey_link }}" class="text-decoration-none" target="_blank"><span class="text-color-pink">link direto</span></a>.</p>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-lg-4 col-sm-8">
+                <div class="py-2 px-4 chat-widget-header text-light border rounded-top">
+                    <div class="d-flex align-items-center py-1">
+                        <div class="flex-grow-1 pl-1">
+                            <input type="hidden" id="input-register-id" name="input-register-id" value="{{ register.id }}">
+                            <strong>Olá <span id="nickname">{{ nickname }}</span></strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="position-relative border border-top-0 border-bottom-0">
+                    <!-- List of Messages -->
+                    <div class="chat-messages  px-3" id="message-box">
+                        {% for message in messages %}
+
+                            {% if message.nickname == nickname %}
+                            <div class="container my-1 message rounded" id="message_{{ message.id }}">
+                                <div class="row pt-2 align-items-left">
+                                    <div class="col-10 py-1">
+                                        <span class="fw-bold">{{ message.nickname }}</span> - <span class="small text-light">{{ message.create_at.strftime("%d/%m/%Y %H:%M") }}</span>
+                                    </div>
+                                    <div class="col-2">
+                                        <button class="btn btn-sm text-light btn-delete-message" name="delete-message" id="{{ message.id }}" ><i class="bi bi-trash"></i></button>
+                                    </div>
+                                </div>
+                                <div class="row pb-2 align-items-left">
+                                    <div class="col-12 text-break">
+                                        {{ message.text }}
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="container my-1 pb-2 bg-light" id="message_{{ message.id }}">
+                                <div class="row pt-2 align-items-left">
+                                    <div class="col-12">
+                                        <span class="fw-bold">{{ message.nickname }}</span> - <span class="small text-secondary">{{ message.create_at.strftime("%d/%m/%Y %H:%M") }}</span>
+                                    </div>
+                                </div>
+                                <div class="row pb-2 align-items-left">
+                                    <div class="col-12 text-break">
+                                        {{ message.text }}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <!-- End -->
+                </div>
+
+                <div class="flex-grow-0 py-2 px-3 border rounded-bottom">
+                    <div class="row g-2">
+                        <div class="col-10">
+                            <!-- <input type="text" class="form-control" placeholder="Digite a sua mensagem" id="input-message" aria-describedby="send-message"> -->
+                            <textarea name="message" class="form-control disable-resize" id="input-message" rows="2" placeholder="Digite a sua mensagem" aria-describedby="send-message"></textarea>
+                        </div>
+                        <div class="col-2">
+                            <button class="btn btn-secondary btn-secondary" id="send-message" value="{{ event.id }}"><i class="bi bi-send"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col-lg-12 d-lg-block">
+                <video id="player" class="video-js vjs-theme-forest vjs-16-9 vjs-big-play-button" poster="{{ url_for('static', filename='uploads/' + streaming.poster) }}">
+                    <source src="{{ streaming.source }}" type="application/x-mpegURL">
+                </video>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+{% block javascript %}
+{{ super () }}
+<!-- VideoJS -->   
+<script src="{{ url_for('static', filename = 'plugins/video-js-8.10.0/video.min.js') }}"></script>
+
+<!-- VideoJS Localization -->
+<script src="{{ url_for('static', filename = 'plugins/video-js-8.10.0/lang/pt-BR.js') }}"></script>
+
+<!-- HLS Plugin -->
+<script src="{{ url_for('static', filename = 'plugins/video-js-8.10.0/extensions/videojs-http-streaming.min.js') }}"></script>
+
+<!-- SocketIO -->
+<script src="{{ url_for('static', filename = 'js/libs/socket.io.min.js') }}"></script>
+
+<script type='text/javascript'>
+    var player = videojs('player',{
+        controls: true,
+        autoplay: true,
+        preload: 'auto',
+        muted: false,
+        fluid: true,
+        language: 'pt-BR'
+    });
+</script>
+
+<!-- JS Live -->
+<script src="{{ url_for('static', filename = 'js/live.js') }}"></script>
+<script src="{{ url_for('static', filename = 'js/chat.js') }}"></script>
+
+{% endblock %}

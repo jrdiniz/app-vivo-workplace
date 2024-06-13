@@ -1,0 +1,111 @@
+{% extends "base-setup.html" %}
+{% block head %}
+{{ super() }}
+<link href="//vjs.zencdn.net/8.3.0/video-js.min.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+{% include "base-setup-header.html" ignore missing %}
+
+<div class="row mt-3">
+    <div class="col-12 h2 pb-3">Configurar Streaming</div>
+</div>
+{% if streaming and streaming.source != '' %}
+<div class="row">
+    <div class="col-8 pb-3">
+        <h4>Preview</h4>
+        <video id="player" class="video-js vjs-default-skin vjs-16-9 vjs-big-play-centered" poster="{{ url_for('static', filename='uploads/' + streaming.poster ) }}">
+            <source src="{{ streaming.source }}" type="application/x-mpegURL">
+        </video>
+        
+    </div>
+</div>
+{% endif %}
+<div class="row">
+    <div class="col-sm-12">
+    <div class="h4 pb-4">URL de Publicação</div>
+    <form method="POST" action="{{ url_for('setup.streaming', event_id = event.id ) }}" enctype="multipart/form-data">
+        <div class="col-md-8">
+            <fieldset class="form-group">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gridHLS" id="rdLiveID" value="liveid" {% if streaming.source_type == "liveid" %} checked {% endif %}>
+                    <label class="form-check-label" for="">
+                        Live ID
+                    </label>
+                    <div class="form-group pr-2">
+                        {% if streaming %}
+                            {% set url_parse = streaming.source.split('/') %}
+                            {% if url_parse|length > 0 %}
+                                {% set liveid = url_parse[4] %}    
+                            {% endif %}
+                        {% else %}
+                            {% set liveid = 0 %}
+                        {% endif %}
+                        
+                        <select name="liveid" id="selectLiveID" class="form-select">
+                            {% for id in range(1160, 1180) %}
+                            <option value="{{id}}" {% if liveid|int == id|int %} selected {% endif %}>{{ id }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="alert alert-info my-1" role="alert">
+                        <i class="bi bi-info-circle"></i> Por padrão a distribuição de CDN responde pelo endereço <code>{{ config['CDN_LIVE'] }}/hls/{liveid}/trr_.m3u8</code>, onde <code>liveid</code> é o 
+                            mesmo Live ID configurado no encoder que será utilizado para receber o sinal da geração.
+                    </div>
+                </div>
+                <div class="form-check"> 
+                    <input class="form-check-input" type="radio" name="gridHLS" id="rdUrl" value="url" {% if streaming.source_type == "url" %} checked {% endif %}>
+                    <label class="form-check-label" for="">
+                        Fonte HLS: URL
+                    </label>
+                    <div class="form-group pr-2">
+                        <input type="text" class="form-control" id="inputSource" name="source" value="{% if streaming.source_type == 'url' %} {{ streaming.source }} {% endif %}" {% if streaming.source_type != "url" %} disabled {% endif %}>
+                    </div>
+                </div>    
+            </fieldset>
+        </div>
+    </div>
+    <h4 class="py-4">Upload do Poster do Player (Background)</h4>
+    <div class="col-md-8 mb-4">
+        <input type="file" class="form-control" name="poster" id="poster">
+            {% if not streaming %}
+            <div class="alert alert-warning my-2" role="alert">
+                <i class="bi bi-exclamation-triangle"></i> Não existe nenhum poster configurado para o player de vídeo.
+            </div>
+            {% else %}
+            <div class="my-2">
+                <strong>Imagem de fundo do player (Poster)</strong>: <a href="{{ url_for('static', filename='uploads/' + streaming.poster ) }}" target="_blank" > {{ streaming.poster }}.</a>
+                <img src="{{ url_for('static', filename='uploads/' + streaming.poster ) }}" class="img-thumbnail" alt="" srcset="">
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-group col-md-8 mb-2">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}                     
+                    <div class="alert {{ category }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <div class="form-group col-md-8 mb-2">                       
+        <button type="submit" class="btn btn-primary" value="save" name="save">Salvar Configurações</button>
+        <a href="{{ url_for('setup.publish_streaming', event_id = event.id) }}" class="btn btn-success" value="{{ event.status}}" name="publish-streaming" id="publish-streaming">Iniciar Webinar</a>
+    </div>
+</form>
+
+{% endblock %}
+{% block javascript %}
+    {{ super() }}
+    <!-- VideoJS -->   
+    <script src="//vjs.zencdn.net/8.3.0/video.min.js"></script>
+
+    <!-- HLS Plugin -->
+    <script src="{{ url_for('static', filename = 'plugins/videojs-http-streaming.min.js') }}"></script>
+
+    <!-- SockerIO -->
+    <script src="{{ url_for('static', filename = 'js/libs/socket.io.min.js') }}"></script>
+
+    <!-- Streaming.js -->
+    <script src="{{ url_for('static', filename = 'js/streaming.js') }}"></script>
+{% endblock %}

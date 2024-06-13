@@ -1,0 +1,9 @@
+workers = 1
+worker_connections = 1000
+timeout = 300
+bind = "0.0.0.0:{{port}}"
+worker_class = 'eventlet'
+accesslog = "access.log"
+errorlog = "error.log"
+loglevel = "info"
+chdir = "{{ application_path }}/{{ application_user }}/public_html"

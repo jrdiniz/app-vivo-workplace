@@ -1,0 +1,65 @@
+{% extends "base-setup.html" %}
+{% block content %}
+    <div class="row mt-3 d-flex">
+        <div class="h2 pb-3 col-10 justify-content-start align-items-center d-flex">Estatísticas do Evento</div>
+        <div class="col-2 justify-content-end align-items-center d-flex"><a class="btn btn-primary" href="{{ url_for('setup.export', event_id = event.id) }}"><i class="bi bi-box-arrow-down"></i> Exportar</a></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            {% set total = registers|length %}
+            {% set total_watching = registers|rejectattr("watched", "false")|list|count %}
+            {% set total_action = registers|selectattr("action", "equalto", 1)|list|count %}
+
+            <div class="card border-primary text-center mb-2">
+                <div class="card-header border-primary bg-primary text-white"><strong>Leads <i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-title="Total de usuários que preencheram o formulário da landing page, que podem ou não ter assistido o evento."></i></strong></div>
+                <div class="card-body">
+                <h3 class="card-title">{{ total }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6" hx-get="{{ url_for('setup.dashboard_count_total_watched', event_id = event.id )}}" hx-trigger="load every 30s" hx-swap="innerHTML">
+            
+        </div>
+    </div>
+<div class="row">
+    <div class="h3 pt-3 pb-3 col-sm-8">Inscritos</div>
+    <div class="col-sm-12">
+        <table class="table table-sm">
+            <thead>
+                <th>Data</th>
+                <th>Nome Completo</th>
+                <th>Telefone</th>
+                <th>E-mail</th>
+                <th>Assistiu?</th>
+            </thead>
+            <tbody>
+                {% for register in registers %}
+                    <tr>
+                        <td>{% if register.date %} {{ register.date.strftime('%d/%m/%Y %H:%M') }}{% endif %}</td>
+                        <td>{{ register.name }}</td>
+                        <td>{{ register.phone_number }}</td>
+                        <td>{{ register.email }}</td>
+                        <td>{% if register.watched %} Sim {% else %} Não {% endif %}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+{{ super() }}
+
+    <!-- SockerIO -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" integrity="sha384-mZLF4UVrpi/QTWPA7BjNPEnkIfRFn4ZEO3Qt/HFklTJBj/gBOV8G3HcKn4NfQblz" crossorigin="anonymous"></script>
+
+    <!-- Streaming.js -->
+    <script src="{{ url_for('static', filename = 'js/registers.js') }}"></script>
+
+
+    <script>
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    </script>
+
+{% endblock %}

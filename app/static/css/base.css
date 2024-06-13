@@ -1,0 +1,126 @@
+:root {
+  --primary-color: rgb(70, 30, 95);
+  --secondary-color: rgb(235, 60, 125);
+  --tertiary-color: rgb(250, 100, 35);
+  --text-dark: #000;
+  --text-ligth: #fff;
+}
+
+body,
+html {
+  letter-spacing: 1px;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+
+  /* line-height: 50px;  */
+}
+
+.footer > .container {
+  color: black;
+  padding-top: 20px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+body > .container {
+  width: auto;
+  padding: 60px 15px 0;
+}
+
+.footer a {
+  color: black;
+}
+
+.bg-purple {
+  background-color: rgb(70, 30, 95);
+}
+.bg-orange {
+  background-color: rgb(250, 100, 35);
+}
+.bg-pink {
+  background-color: rgb(235, 60, 125);
+}
+.text-color-purple {
+  color: rgb(70, 30, 95);
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+.text-color-pink {
+  color: rgb(235, 60, 125);
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+/* buttons */
+.btn-purple {
+  color: #fff;
+  background-color: rgb(70, 30, 95);
+  border-color: rgb(70, 30, 95);
+}
+.btn-purple:hover {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  background-color:var(--text-ligth);
+}
+
+.btn-pink {
+  color: #fff;
+  background-color: rgb(235, 60, 125);
+  border-color: rgb(235, 60, 125);
+}
+.btn-pink:hover {
+  color: #fff;
+}
+.bg-light-purple {
+  background-color: rgb(160, 120, 180) !important;
+}
+
+/* Landing Page Style */
+
+h1 {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+h2 {
+  color: var(--secondary-color);
+  font-weight: bold;
+}
+h3 {
+  color: var(--primary-color);
+}
+
+.description {
+  color: var(--primary-color);
+  padding: 25px 0 20px 0;
+  font-size: 24px;
+}
+
+.speakers p {
+  color: var(--secondary-color);
+  font-weight: bold;
+  font-size: 20px;
+}
+.speakers ul {
+  list-style-type: square;
+  font-size: 20px;
+}
+
+.logo{
+  width: 130px;
+}
+
+/* End Landing Page Style */

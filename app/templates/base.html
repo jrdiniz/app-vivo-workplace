@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    {% block head %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %} {% endblock %}</title>
+    <link href="{{ url_for('static', filename='node_modules/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet"  crossorigin="anonymous">
+    <link href="{{ url_for('static', filename='node_modules/bootstrap-icons/font/bootstrap-icons.min.css')}}" rel="stylesheet"  crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/base.css') }}"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='favicon/favicon.ico') }}"
+    />
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <!-- Vivo Type Internal Font - woff2 type -->
+    
+    <link rel="preload" href="{{ url_for('static', filename='fonts/VivoTypeRegular.woff2') }}" as="font" crossorigin="anonymous">
+    <link rel="preload" href="{{ url_for('static', filename='fonts/VivoTypeLight.woff2') }}" as="font" crossorigin="anonymous">
+    <link rel="preload" href="{{ url_for('static', filename='fonts/VivoTypeBold.woff2') }}" as="font" crossorigin="anonymous">
+    <!-- Vivo Type Internal Font - otf type -->
+    <link rel="preload" href="{{ url_for('static', filename='fonts/VivoTypeRegular.otf') }}" as="font" crossorigin="anonymous">
+    <link rel="preload" href="{{ url_for('static', filename='fonts/VivoTypeLight.otf') }}" as="font" crossorigin="anonymous">
+    <link rel="preload" href="{{ url_for('static', filename='fonts/VivoTypeBold.otf') }}" as="font" crossorigin="anonymous">
+    <!-- End Fonts -->
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RYRR05KYBB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-RYRR05KYBB');
+    </script>
+    {% endblock %}
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-sm fixed-top bg-purple">
+        <div class="container">
+          <a href="/" class="navbar-brand"
+            ><img
+              src="{{ url_for('static', filename='images/logo_vivo_completo_branco.png') }}"
+              alt="Vivo"
+              srcset=""
+              class="img-fluid logo"
+          /></a>
+        </div>
+      </nav>
+    </header>
+    {% block content %}{% endblock %}
+    <footer class="footer bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 d-none d-lg-block text-center">
+            <p>
+              <small
+                ><a href="https://www.terra.com.br" target="_blank"
+                  >Terra Networks S/A</a
+                >
+                - Engenharia de Vídeo - <span id="year"></span
+              ></small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="{{ url_for('static', filename='node_modules/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+    <script>
+      const year = document.getElementById("year");
+      const currentDate = new Date();
+      const currentYear = currentDate.getFullYear();
+      year.innerHTML = currentYear;
+    </script>
+    {{ moment.include_moment() }} {{ moment.locale("pt-BR") }} {% block
+    javascript %}{% endblock %}
+  </body>
+</html>

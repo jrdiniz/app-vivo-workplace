@@ -1,0 +1,82 @@
+{% extends "base-setup.html" %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+{% include "base-setup-header.html" ignore missing %}
+<div class="row">
+    <div class="col-sm-12 mt-2 mb-3">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('setup.edit_event', id=event.id) }}">Landing Page</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ url_for('setup.survey', event_id = event.id) }}">Pesquisa de Satisfação</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('setup.messages', event_id = event.id) }}">Mensagens</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="col-10">
+            <div class="h4 pb-3">Pesquisa de Satisfação</div>
+            <p>Informe o link de formulário externo (Office 365 Forms, Google Forms, Survey Monkey, etc.) para coletar feedback dos participantes do seu evento. Ao informar o endereço do formulário será gerado um QRCODE na página que será transmitido o evento.</p>
+        </div>
+        {% if survey %}
+        <form method="POST" action="{{ url_for('setup.survey_disable')}}" id="formEvent" class="row g-1">
+            <input type="hidden" value="{{ event.id }}" name="event_id">
+            <div class="media col-md-2">
+                <img src="{{ url_for('static', filename = 'uploads/') }}{{ survey.qrcode }}" alt="..." width="150" height="150">
+            </div>
+            <div class="col-10">
+                <h5 class="mt-2">Formulário de Pesquisa</h5>
+                <label><a href="{{ survey.survey_link }}" target="_blank">{{ survey.survey_link }}</a></label>
+            </div>
+            <div class="col-10">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert {{ category }}" role="alert">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="col-10 my-4">
+                <button type="submit" class="btn btn-danger" name="disable" id="disable">Desativar Pesquisa</button>
+            </div>
+        </form>
+        {% else %}
+        <form method="POST" action="{{ url_for('setup.survey_enable') }}" id="formEvent" class="row g-1">
+            <input type="hidden" value="{{ event.id }}" name="event_id">
+            <div class="col-10">
+                <label for="inputAddress" class="form-label">Link para o formulário</label>
+                <div class="input-group">
+                    <span class="input-group-text" id="survey-link">Link</span>
+                    <input type="text" class="form-control" id="inputLinkForm" name="survey_link" aria-describedby="survey-link" value="" placeholder="Informe o link da pesquisa, exemplo: https://www.survey.com/survey">
+                    <button type="submit" class="btn btn-primary" value="enable" name="enable" id="btn-enable">Ativar Pesquisa</button>
+                </div>
+            </div>
+            <div class="col-10">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert {{ category }}" role="alert">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </form>    
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block javascript %}
+    {{ super() }}
+
+{% endblock %}

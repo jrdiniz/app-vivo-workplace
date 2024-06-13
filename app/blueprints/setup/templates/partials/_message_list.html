@@ -1,0 +1,45 @@
+<table class="table">
+    <thead>
+        <th width="15%">Data e Hora</th>
+        <th width="15%">Apelido</th>
+        <th width="60%">Mensagem</th>
+        <th width="10%"></th>
+    </thead>
+    <tbody>
+        {% for message in messages %}
+        <tr>
+            <td>{{ message.create_at.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td><a href="{{ message.register_id }}"> {{ message.nickname }}</a></td>
+            <td>{{ message.text }}</td>
+            <td>
+                <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<nav aria-label="Páginas">
+    <ul class="pagination justify-content-center">
+        {% if messages.prev_num %}
+        <li class="page-item">
+            <a href="{{ url_for('setup.messages', event_id = event.id, page=messages.prev_num) }}" class="page-link" tabindex="1" aria-disabled="true">Anterior</a>
+        </li>
+        {% endif %}
+        {% for page in messages.iter_pages(left_edge=3, right_edge=3) %}
+            {% if page %}
+                {% if page != messages.page %}
+                    <li class="page-item"><a href="{{ url_for('setup.messages', event_id = event.id, page=page) }}" class="page-link"> {{ page }} </a></li> 
+                {% else %}
+                    <li class="page-item active" aria-current="page"><a href="{{ url_for('setup.messages', event_id = event.id, page=page) }}" class="page-link"> {{ page }} </a></li> 
+                {% endif %}
+            {% else %}
+                ...
+            {% endif %}
+        {% endfor %}
+        {% if messages.next_num %}
+        <li class="page-item">
+            <a href="{{ url_for('setup.messages',event_id = event.id, page=messages.next_num) }}" class="page-link" tabindex="1" aria-disabled="true">Próxima</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>

@@ -1,0 +1,8 @@
+
+<div class="card border-success text-center mb-2">
+    <div class="card-header border-success bg-success text-white"><strong>Assistiram <i class="bi bi-info-circle" data-bs-toggle="tooltip" data-bs-title="Percetual dos leads capturados que assistiram o evento."></i></strong></div>
+    <div class="card-body">
+    <h3 class="card-title">
+        {% if total_watched > 0 %} {{ total_watched }} / {{ "%.2f"|format((total_watched / total_registers) * 100) }}% {% else %} 0 / 0% {% endif %}</h3>
+    </div>
+</div>

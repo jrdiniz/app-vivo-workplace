@@ -1,0 +1,68 @@
+{% extends "base-setup.html" %}
+{% block content %}
+{% include "base-setup-header.html" ignore missing %}
+<div class="row">
+    <div class="col-sm-12 mt-2 mb-3">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('setup.edit_event', id=event.id) }}">Landing Page</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('setup.survey', event_id = event.id) }}">Pesquisa de Satisfação</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ url_for('setup.comments', event_id = event.id) }}">Comentários</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="h4 pb-3">Comentários</div>
+        <p>Aqui você deve informar os paramentos da comunidade criada na ferramenta <a href="https://muut.com">muut.com</a>, para ativar a ferramenta de chat.</p>
+        <form method="POST" action="{{ url_for('setup.comments', event_id = event.id )}}" class="row g-2">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input type="hidden" name="event_id" value="{{ event.id }}">
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label for="inputAddress">Key</label>
+                    <input type="text" class="form-control" id="inputKey" name="muut_key" value="{{ comment.muut_key }}">
+                </div>
+                <div class="form-group col-md-8">
+                    <label for="inputEmail4">Secret Key</label>
+                    <input type="text" class="form-control" id="inputSecretKey" name="muut_secret_key" value="{{ comment.muut_secret_key }}">
+                </div>
+                <div class="form-group col-md-8">
+                    <label for="inputPassword4">Comunidade</label>
+                    <input type="text" class="form-control" id="inputCommunity" name="muut_community" value="{{ comment.muut_community }}">
+                </div>
+                <div class="form-group col-md-8">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert {{ category }}" role="alert">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div class="col-sm-12">                            
+                <button type="submit" class="btn btn-primary" value="save" name="save">Salvar Configurações</button>
+                {% if comment.muut_status == True %}
+                <button type="submit" class="btn btn-danger" value="status_disable" name="status_disable" id="status_disable">Desativar Comentários</button>
+                {% else %}
+                <button type="submit" class="btn btn-success" value="status_enable" name="status_enable" id="status_enable">Ativar Configurações</button>
+                {% endif %}
+            </div>
+        </form>        
+    </div>
+</div>
+{% endblock %}
+{% block javascript %}
+    {{ super() }}
+    <!-- SockerIO -->
+    <script src="{{ url_for('static', filename = 'js/libs/socket.io.min.js') }}"></script>
+
+    <!-- Streaming.js -->
+    <script src="{{ url_for('static', filename = 'js/comments.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block head %}
+{{ super ()}}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/webui.css') }}" crossorigin="anonymous">
+
+
+{% endblock %}
+{% block title %}Webinars Vivo Empresas{% endblock %}
+{% block content %}
+<div class="container-fluid landing-background" id="webinar-section">
+  <div class="home-inner container">
+    <div class="mb-4">
+      <h1>Próximos Webinars</h1>        
+    </div>
+    {% for event in events %}
+    <div class="row">
+      <div class="col-sm-8 pr-3" id="event-section">
+        <h2>{{ event.title }}</h2>
+        <h3>{{ moment(event.date).format('dddd, LL') }} a partir das {{ event.start.strftime("%Hh%M")}}</h3>
+        <p class="description">{{ event.subtitle }}</p>
+        {% set speakers = event.speakers.split(';') %}
+        <div class="speakers">
+          <p>Apresentado por:</p>
+          <ul> 
+            {% for speaker in speakers %}
+            <li class="text-color-purple">{{ speaker}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-4 align-self-center">
+        <div><a href="{{ event.slug }}" value="Participar" class="btn btn-outline-dark btn-block mb-3">Faça sua Inscrição</a></div>
+        <div><a href="{{ url_for('webui.calendar', slug=event.slug) }}" value="Participar" class="btn btn-outline-dark btn-block"><i class="far fa-calendar-alt"></i> Adicione no seu calendário</a></div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% block script %}
+  {% endblock %}
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends "base-setup.html" %}
+{% block head %}
+{{ super() }}
+
+{% endblock%}
+{% block content %}
+<div class="row mt-3 d-flex">
+    <div class="h2 pb-3 col-10 justify-content-start align-items-center d-flex">Eventos</div>
+    <div class="col-2 justify-content-end align-items-center d-flex"><a class="btn btn-primary" href="{{ url_for('setup.add_event') }}"><i class="bi bi-plus-circle"></i> Novo Evento</a></div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="h4">Eventos Ao Vivo</div>
+        {% if started %}
+        <table class="table table-sm">
+            <thead>
+                <th width="40%">Evento</th>
+                <th width="15%">Data</th>
+                <th width="10%">Início</th>
+                <th width="10%">Fim</th>
+                <th width="25%"></th>
+            </thead>
+            <tbody>
+                {% for event in started %}
+                <tr>
+                    <td>{{ event.title }}</td>
+                    <td>{{ event.date.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ event.start.strftime('%H:%M') }}</td>
+                    <td>{{ event.end.strftime('%H:%M') }}</td>
+                    <td>
+                        <a href="{{ config.APP_DOMAIN }}/{{event.slug}}" class="btn btn-warning btn-sm" target="_blank"><i class="bi bi-globe"></i></a>
+                        <a href="{{ url_for('setup.edit_event', id=event.id) }}" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
+                        <a href="{{ url_for('setup.dashboard', event_id =event.id) }}" class="btn btn-dark btn-sm"><i class="bi bi-bar-chart-line"></i></a>
+                        <a href="{{ url_for('setup.streaming', event_id = event.id) }}" class="btn btn-danger btn-sm"><i class="bi bi-play-btn"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="alert alert-info" role="alert"><i class="fas fa-info-circle mr-2"></i>Não existe nenhum evento ao vivo neste momento.</div>
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="h4">Próximos Eventos</div>
+        {% if next_events %}
+        <table class="table table-sm">
+            <thead>
+                <th width="45%">Evento</th>
+                <th width="15%">Data</th>
+                <th width="10%">Início</th>
+                <th width="10%">Fim</th>
+                <th width="20%"></th>
+            </thead>
+            <tbody>
+                {% for event in next_events %}
+                <tr>
+                    <td>{{ event.title }}</td>
+                    <td>{{ event.date.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ event.start.strftime('%H:%M') }}</td>
+                    <td>{{ event.end.strftime('%H:%M') }}</td>
+                    <td>
+                        <a href="{{ request.scheme }}://{{config.APP_DOMAIN}}/{{event.slug}}" class="btn btn-warning btn-sm" target="_blank"><i class="bi bi-globe"></i></a> 
+                        <a href="{{ url_for('setup.edit_event', id=event.id) }}" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
+                        <a href="{{ url_for('setup.dashboard', event_id =event.id) }}" class="btn btn-dark btn-sm"><i class="bi bi-bar-chart-line"></i></a>
+                        <a href="{{ url_for('setup.streaming', event_id = event.id) }}" class="btn btn-danger btn-sm"><i class="bi bi-play-btn"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="alert alert-info" role="alert"><i class="fas fa-info-circle mr-2"></i>Não existe nenhum evento agendado até o momento.</div>
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="h4">Eventos Realizados</div>
+        {% if finished_events %}
+        <table class="table table-sm">
+            <thead>
+                <th width="45%">Evento</th>
+                <th width="15%">Data</th>
+                <th width="10%">Início</th>
+                <th width="10%">Fim</th>
+                <th width="20%"></th>
+            </thead>
+            <tbody>
+                {% for event in finished_events %}
+                <tr>
+                    <td>{{ event.title }}</td>
+                    <td>{{ event.date.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ event.start.strftime('%H:%M') }}</td>
+                    <td>{{ event.end.strftime('%H:%M') }}</td>
+                    <td>
+                        <a href="{{ url_for('setup.edit_event', id=event.id) }}" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                        <a href="{{ url_for('setup.dashboard', event_id =event.id) }}" class="btn btn-dark"><i class="bi bi-bar-chart-line"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <div class="alert alert-info" role="alert"><i class="fas fa-info-circle mr-2"></i>Nenhum evento foi realizado até o momento.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+{{ super() }}
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base-setup.html" %}
+{% block head %}
+{{ super() }}
+
+{% endblock%}
+{% block content %}
+{% include "base-setup-header.html" ignore missing %}
+<div class="row">
+    <div class="col-sm-12 mt-2 mb-3">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ url_for('setup.edit_event', id=event.id) }}">Landing Page</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('setup.survey', event_id = event.id) }}">Pesquisa de Satisfação</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('setup.messages', event_id = event.id) }}">Mensagens</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+    <form method="POST" class="row g-3" action="{{ url_for('setup.update_event') }}" id="formEvent">
+        <input type="hidden" value="{{ event.id }}" name="id">
+        <div class="col-4">
+            <label for="" class="form-label">Status do Evento</label>
+            <select name="status" id="status-dropdown" class="form-select">
+                <option value="started" {% if event.status == "started" %} selected {% endif %}>Iniciado</option>
+                <option value="finished" {% if event.status == "finished" %} selected {% endif %}>Finalizado</option>
+                <option value="scheduled" {% if event.status == "scheduled" %} selected {% endif %}>Agendado</option>
+            </select>
+        </div>
+        <div class="col-md-10">
+            <label for="inputAddress" class="form-label">Título (Máx: 100 Caracteres)</label>
+            <input type="text" class="form-control" maxlength="100" id="inputTitle" name="title" value="{{ event.title }}" required>
+        </div>
+        <div class="col-md-10">
+            <label for="inputSubTitle" class="form-label">Subtítulo (Máx: 255 Caracteres)</label>
+            <textarea class="form-control" maxlength=255 id="inputSubTitle" name="subtitle" rows="3">{{ event.subtitle }}</textarea>
+        </div>
+        
+        <div class="col-md-3">
+            <label for="inputPassword4" class="form-label">Data (ex: dd/mm/YYYY)</label>
+            <input type="text" class="form-control" name="date" id="date" {% if event.date %} value="{{ event.date.strftime('%d/%m/%Y') }}" {% endif %} required>
+            <em>Horário de Brasília (UTC -3)</em>
+        </div>
+        <div class="col-md-3">
+            <label for="lblEventStart" class="form-label">Inicio (ex: 12:00)</label>
+            <input type="text" class="form-control" name="start" id="start" {% if event.start %} value="{{ event.start.strftime('%H:%M') }}" {% endif %} required>
+        </div>
+        <div class="col-md-3">
+            <label for="lblEventEnd" class="form-label">Fim (ex: 13:00)</label>
+            <input type="text" class="form-control" name="end" id="end" {% if event.end %} value="{{ event.end.strftime('%H:%M') }}" {% endif %} required>
+        </div>
+        <div class="col-md-10">
+            <label for="" class="inputSpeakers form-label" >Palestrantes (Máx: 255 Caracteres)</label>
+            <textarea class="form-control" maxlength=255 id="inputSpeakers" name="speakers" rows="3">{{ event.speakers }}</textarea>
+            <p>A lista de palestrantes deve ser separada por <code>';'</code>, ex: <em>Nome Completo Palestrante 1 - Título Palestrante 1<code>;</code>Nome Completo Palestrante 2 - Título Palestrante 2</em></p>
+        </div>
+        <div class="col-sm-10 pt-2">
+            <h3>Calendário (.ics)</h3>
+        </div>
+        <div class="col-md-10">
+            <label for="" class="inputEmail form-label">E-mail para Contato:</label>
+            <input type="email" class="form-control" name="email" id="email" value="{{ event.email }}" required>
+        </div>
+        <div class="col-md-10">
+            <label for="" class="inputICalendar form-label">Conteúdo do arquivo iCalendar (.ics):</label>
+            <textarea class="form-control" maxlength=255 id="icalendar" name="icalendar" rows="4" required>{{ event.icalendar }}</textarea>
+        </div>
+    
+        <div class="col-md-10">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert {{ category }}" role="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div class="col-10 my-4">
+            <button type="submit" class="btn btn-primary" value="save" name="save">Salvar Configurações</button>
+            <a class="btn btn-info text-light" href="{{ url_for('setup.calendar', id=event.id ) }}" value="calendar" name="calendar">Download Calendar (.ics)</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block javascript %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename = 'js/libs/moment-with-locales.js') }}"></script>
+{% endblock %}
