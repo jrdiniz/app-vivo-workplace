@@ -208,7 +208,7 @@ def calendar(slug):
     ics_event.end = arrow.get(
         datetime.combine(event.date, event.end.time()), current_app.config["TIMEZONE"]
     )
-    ics_event.created = arrow.get(datetime.now(), current_app.config["TIMEZONE"])
+    ics_event.created_at = arrow.get(datetime.now(), current_app.config["TIMEZONE"])
     ics_event.description = render_template("calendar.html", event=event)
     ics_event.organizer = event.email
     ics_event.location = request.url_root

@@ -174,7 +174,7 @@ def calendar(id):
     ics_event.end = arrow.get(
         datetime.combine(event.date, event.end.time()), current_app.config["TIMEZONE"]
     )
-    ics_event.created = arrow.get(datetime.now(), current_app.config["TIMEZONE"])
+    ics_event.created_at = arrow.get(datetime.now(), current_app.config["TIMEZONE"])
     ics_event.description = render_template("calendar.html", event=event)
     ics_event.organizer = event.email
     ics_event.location = request.url_root
@@ -491,7 +491,7 @@ def message_export(event_id):
             csv_rows.append(
                 {
                     "id": message.id,
-                    "create_at": message.create_at,
+                    "created_at": message.created_at,
                     "nickname": message.nickname,
                     "text": message.text,
                     "name": register.name,
@@ -504,7 +504,7 @@ def message_export(event_id):
         csv_file,
         fieldnames=[
             "id",
-            "create_at",
+            "created_at",
             "nickname",
             "text",
             "name",
